@@ -1,8 +1,8 @@
 /*
  * test.cc
  *
- *      Description: ²âÊÔZkClient, ZkClientManagerµÄ¸÷¸ö½Ó¿Ú
- *      Created on: 2016Äê2ÔÂ20ÈÕ
+ *      Description: æµ‹è¯•ZkClient, ZkClientManagerçš„å„ä¸ªæ¥å£
+ *      Created on: 2016å¹´2æœˆ20æ—¥
  *      Author: ZengHui Bao (bao_z_h@163.com)
  */
 
@@ -116,7 +116,7 @@ void getHandle_test(uint32_t original_handle, ZkClientPtr cli)
 {
     assert(original_handle == cli->getHandle());
 
-    //´ÓÒ»¸ö²»´æÔÚµÄhandle »ñÈ¡zkclient£¬Ó¦·µ»ØNULL
+    //ä»ä¸€ä¸ªä¸å­˜åœ¨çš„handle è·å–zkclientï¼Œåº”è¿”å›NULL
     uint32_t uninit_handle = 0xFFFFFFF0;
     assert(ZkClientManager::instance().getZkClient(uninit_handle).get() == NULL);
 	printf("getHandle_test succeed!\n");
@@ -124,7 +124,7 @@ void getHandle_test(uint32_t original_handle, ZkClientPtr cli)
 
 void getClientId_test()
 {
-	//´´½¨Ò»¸ösession
+	//åˆ›å»ºä¸€ä¸ªsession
 	uint handle = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
 	if (handle == 0)
 	{
@@ -132,7 +132,7 @@ void getClientId_test()
 		return;
 	}
 
-	//»ñÈ¡µ±Ç°sessionµÄclientId
+	//è·å–å½“å‰sessionçš„clientId
 	ZkClientPtr cli = ZkClientManager::instance().getZkClient(handle);
 	SessionClientId cliId;
 	if (cli->getClientId(cliId) == true)
@@ -140,7 +140,7 @@ void getClientId_test()
 		printClientId(cliId);
 	}
 
-	//ÀûÓÃÖ®Ç°sessionµÄclientId À´ ´´½¨Ò»¸ösession
+	//åˆ©ç”¨ä¹‹å‰sessionçš„clientId æ¥ åˆ›å»ºä¸€ä¸ªsession
 	uint32_t handle_new = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 90000, &cliId, NULL, NULL);
 	if (handle_new == 0)
 	{
@@ -283,11 +283,11 @@ void sync_create_test_1(std::string test_path)
 		goto TAG_SYNC_CREATE_TEST_FAILED_1;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("[not temp, not seq ] retPath:%s, original path:%s\n", retPath.c_str(), test_path.c_str());
 	assert(retPath == test_path);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli->isExist(test_path);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -310,7 +310,7 @@ void sync_create_test_2(std::string test_path)
 	bool isTemp = true;
 	bool isSeq = false;
 
-	//´´½¨Ò»¸ösession
+	//åˆ›å»ºä¸€ä¸ªsession
 	handle_temp = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
 	if (handle_temp == 0)
 	{
@@ -326,22 +326,22 @@ void sync_create_test_2(std::string test_path)
 		goto TAG_SYNC_CREATE_TEST_FAILED_2;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	assert(retPath == test_path);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli_temp->isExist(test_path);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//Ïú»Ùµ±Ç°session
+	//é”€æ¯å½“å‰session
 	ZkClientManager::instance().destroyClient(handle_temp);
 	cli_temp.reset();
 
 	printf("distroy this zkclient, session Handle:%d\n", handle_temp);
-	sleep(5);  //µÈ´ı5Ãë£¬temp session Ïú»Ù
+	sleep(5);  //ç­‰å¾…5ç§’ï¼Œtemp session é”€æ¯
 
 	ec_other = cli->isExist(test_path);
-	assert(ec_other == ZkUtil::kZKNotExist);   //²âÊÔ sessionÏú»Ùºó£¬ÁÙÊ±µÄnode Ó¦×Ô¶¯É¾³ı
+	assert(ec_other == ZkUtil::kZKNotExist);   //æµ‹è¯• sessioné”€æ¯åï¼Œä¸´æ—¶çš„node åº”è‡ªåŠ¨åˆ é™¤
 
 	printf("sync_create_test_2 succeed!\n");
 	return;
@@ -367,11 +367,11 @@ void sync_create_test_3(std::string test_path)
 		goto TAG_SYNC_CREATE_TEST_FAILED_3;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("[not temp, seq] retPath:%s, original path:%s\n", retPath.c_str(), test_path.c_str());
 	assert(retPath != test_path);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli->isExist(retPath);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -394,7 +394,7 @@ void sync_create_test_4(std::string test_path)
 	bool isTemp = true;
 	bool isSeq = true;
 
-	//´´½¨Ò»¸ösession
+	//åˆ›å»ºä¸€ä¸ªsession
 	handle_temp = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
 	if (handle_temp == 0)
 	{
@@ -410,23 +410,23 @@ void sync_create_test_4(std::string test_path)
 		goto TAG_SYNC_CREATE_TEST_FAILED_4;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("[temp, seq] retPath:%s, original path:%s\n", retPath.c_str(), test_path.c_str());
 	assert(retPath != test_path);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli_temp->isExist(retPath);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//Ïú»Ùµ±Ç°session
+	//é”€æ¯å½“å‰session
 	ZkClientManager::instance().destroyClient(handle_temp);
 	cli_temp.reset();
 
 	printf("distroy this zkclient, session Handle:%d\n", handle_temp);
-	sleep(5);  //µÈ´ı5Ãë£¬temp session Ïú»Ù
+	sleep(5);  //ç­‰å¾…5ç§’ï¼Œtemp session é”€æ¯
 
 	ec_other = cli->isExist(retPath);
-	assert(ec_other == ZkUtil::kZKNotExist);   //²âÊÔ sessionÏú»Ùºó£¬ÁÙÊ±µÄnode Ó¦×Ô¶¯É¾³ı
+	assert(ec_other == ZkUtil::kZKNotExist);   //æµ‹è¯• sessioné”€æ¯åï¼Œä¸´æ—¶çš„node åº”è‡ªåŠ¨åˆ é™¤
 
 	printf("sync_create_test_4 succeed!\n");
 	return;
@@ -445,11 +445,11 @@ void sync_create_test_5(std::string parentPath, std::string childPath)
 	bool isTemp = false;
 	bool isSeq = false;
 
-	//²âÊÔ Èç¹û´´½¨µÄ½áµãÖĞ£¬¸¸½áµã»¹Î´´´½¨£¬Ó¦·µ»ØÊ§°Ü
+	//æµ‹è¯• å¦‚æœåˆ›å»ºçš„ç»“ç‚¹ä¸­ï¼Œçˆ¶ç»“ç‚¹è¿˜æœªåˆ›å»ºï¼Œåº”è¿”å›å¤±è´¥
 	ec = cli->create(childPath, "", isTemp, isSeq, retPath);
 	assert(ec == ZkUtil::kZKNotExist);
 
-	//ÏÈ´´½¨¸¸½áµã
+	//å…ˆåˆ›å»ºçˆ¶ç»“ç‚¹
 	ec = cli->create(parentPath, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -457,15 +457,15 @@ void sync_create_test_5(std::string parentPath, std::string childPath)
 		goto TAG_SYNC_CREATE_TEST_FAILED_5;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("[not temp, not seq ] retPath:%s, original path:%s\n", retPath.c_str(), parentPath.c_str());
 	assert(retPath == parentPath);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli->isExist(parentPath);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//ÔÙ´´½¨×Ó½áµã
+	//å†åˆ›å»ºå­ç»“ç‚¹
 	ec = cli->create(childPath, "", false, false, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -473,11 +473,11 @@ void sync_create_test_5(std::string parentPath, std::string childPath)
 		goto TAG_SYNC_CREATE_TEST_FAILED_5;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("[not temp, not seq ] retPath:%s, original path:%s\n", retPath.c_str(), childPath.c_str());
 	assert(retPath == childPath);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli->isExist(childPath);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -533,7 +533,7 @@ void sync_create_seq_no_test()
     }
     printf("\n[sync_create_seq_no_test] retPath:%s \n", retPath.c_str());
 
-    //É¾³ı½áµã
+    //åˆ é™¤ç»“ç‚¹
     printf("\n[sync_create_seq_no_test] delete path:%s \n", firstRetPath.c_str());
     ec = cli->deleteRecursive(firstRetPath);
     assert(ec != ZkUtil::kZKError);
@@ -555,7 +555,7 @@ void sync_create_seq_no_test()
     }
     printf("\n[sync_create_seq_no_test] retPath:%s \n", retPath.c_str());
 
-    //É¾³ı½áµã
+    //åˆ é™¤ç»“ç‚¹
     printf("\n[sync_create_seq_no_test] delete path:%s \n", firstRetPath.c_str());
     ec = cli->deleteRecursive(firstRetPath);
     assert(ec != ZkUtil::kZKError);
@@ -593,7 +593,7 @@ void sync_create_test()
 	std::string retPath = "";
 	ZkUtil::ZkErrorCode ec;
 
-	//ÏÈÉ¾³ı 5 ¸ö½áµã
+	//å…ˆåˆ é™¤ 5 ä¸ªç»“ç‚¹
 	ec = cli->deleteNode(SYNC_CREATE_PATH_NAME_1);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -622,7 +622,7 @@ void sync_create_test()
 		goto TAG_SYNC_CREATE_TEST_FAILED;
 	}
 
-	//Ó¦ÏÈ É¾³ı Ò¶×Ó½áµã£¬ÔÙÉ¾³ı ·ÖÖ§½áµã
+	//åº”å…ˆ åˆ é™¤ å¶å­ç»“ç‚¹ï¼Œå†åˆ é™¤ åˆ†æ”¯ç»“ç‚¹
 	ec = cli->deleteNode(SYNC_CREATE_PATH_NAME_6);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -637,19 +637,19 @@ void sync_create_test()
 		goto TAG_SYNC_CREATE_TEST_FAILED;
 	}
 
-	//²âÊÔnot temp, not seq µÄÇé¿ö//////////////////////////////
+	//æµ‹è¯•not temp, not seq çš„æƒ…å†µ//////////////////////////////
 	sync_create_test_1(SYNC_CREATE_PATH_NAME_1);
 
-	//²âÊÔtemp, not seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•temp, not seq çš„æƒ…å†µ////////////////////////////////
 	sync_create_test_2(SYNC_CREATE_PATH_NAME_2);
 
-	//²âÊÔnot temp, seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•not temp, seq çš„æƒ…å†µ////////////////////////////////
 	sync_create_test_3(SYNC_CREATE_PATH_NAME_3);
 
-	//²âÊÔtemp, seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•temp, seq çš„æƒ…å†µ////////////////////////////////
 	sync_create_test_4(SYNC_CREATE_PATH_NAME_4);
 
-	//²âÊÔ Èç¹û´´½¨µÄ½áµãÖĞ£¬¸¸½áµã»¹Î´´´½¨£¬Ó¦·µ»ØÊ§°Ü
+	//æµ‹è¯• å¦‚æœåˆ›å»ºçš„ç»“ç‚¹ä¸­ï¼Œçˆ¶ç»“ç‚¹è¿˜æœªåˆ›å»ºï¼Œåº”è¿”å›å¤±è´¥
 	sync_create_test_5(SYNC_CREATE_PATH_NAME_5, SYNC_CREATE_PATH_NAME_6);
 
 	printf("sync_create_test succeed!\n");
@@ -672,7 +672,7 @@ void sync_createIfNeedCreateParents_test()
 	bool isTemp = false;
 	bool isSeq = false;
 
-	//Ó¦ÏÈ É¾³ı Ò¶×Ó½áµã£¬ÔÙÉ¾³ı ·ÖÖ§½áµã
+	//åº”å…ˆ åˆ é™¤ å¶å­ç»“ç‚¹ï¼Œå†åˆ é™¤ åˆ†æ”¯ç»“ç‚¹
 	ec = cli->deleteNode(SYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -687,7 +687,7 @@ void sync_createIfNeedCreateParents_test()
 		goto TAG_SYNC_CREATEIFNEEDCREATEPARENT_TEST_FAILED;
 	}
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	ec = cli->createIfNeedCreateParents(SYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -695,11 +695,11 @@ void sync_createIfNeedCreateParents_test()
 		goto TAG_SYNC_CREATEIFNEEDCREATEPARENT_TEST_FAILED;
 	}
 
-	//²âÊÔ ·µ»ØµÄÂ·¾¶ ÕıÈ·
+	//æµ‹è¯• è¿”å›çš„è·¯å¾„ æ­£ç¡®
 	printf("retPath:%s, original path:%s\n", retPath.c_str(), SYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 	assert(retPath == SYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ec_other = cli->isExist(SYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -728,7 +728,7 @@ void sync_set_test()
 	std::string value3 = "";
 	int32_t version3;
 
-	//´´½¨²âÊÔ½áµã
+	//åˆ›å»ºæµ‹è¯•ç»“ç‚¹
 	ec = cli->create(SYNC_SET_PATH_NAME, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -736,23 +736,23 @@ void sync_set_test()
 		goto TAG_SYNC_SET_TEST_FAILED;
 	}
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(SYNC_SET_PATH_NAME, value1, version1) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[sync_set_test] getNode:%s failed! sync_getNode_test failed!\n", SYNC_GETNODE_PATH_NAME);
 		goto TAG_SYNC_SET_TEST_FAILED;
 	}
 
-	//ÉèÖÃ½áµãµÄ °æ±¾ºÅ²»¶Ô£¬Ó¦·µ»ØÊ§°Ü
+	//è®¾ç½®ç»“ç‚¹çš„ ç‰ˆæœ¬å·ä¸å¯¹ï¼Œåº”è¿”å›å¤±è´¥
 	ec_other = cli->set(SYNC_SET_PATH_NAME, "test_value_1", version1 + 1);
 	assert(ec_other == ZkUtil::kZKError);
 
 
-	//ÉèÖÃ½áµãµÄ °æ±¾ºÅÕıÈ·£¬Ó¦·µ»Ø³É¹¦
+	//è®¾ç½®ç»“ç‚¹çš„ ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåº”è¿”å›æˆåŠŸ
 	ec_other = cli->set(SYNC_SET_PATH_NAME, "test_value_2", version1);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(SYNC_SET_PATH_NAME, value2, version2) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[sync_set_test] getNode:%s failed! sync_getNode_test failed!\n", SYNC_SET_PATH_NAME);
@@ -761,11 +761,11 @@ void sync_set_test()
 	assert(value2 == "test_value_2");
 
 
-	//²»ÊäÈë°æ±¾ºÅ£¬ÔòÄ¬ÈÏ ÉèÖÃ×î½üµÄ°æ±¾ºÅ
+	//ä¸è¾“å…¥ç‰ˆæœ¬å·ï¼Œåˆ™é»˜è®¤ è®¾ç½®æœ€è¿‘çš„ç‰ˆæœ¬å·
 	ec_other = cli->set(SYNC_SET_PATH_NAME, "test_value_3");
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(SYNC_SET_PATH_NAME, value3, version3) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[sync_set_test] getNode:%s failed! sync_getNode_test failed!\n", SYNC_GETNODE_PATH_NAME);
@@ -795,7 +795,7 @@ void sync_deleteNode_test()
 	std::string value = "";
 	int32_t version = 0;
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	ec = cli->createIfNeedCreateParents(SYNC_DELETENODE_PATH_NAME_2, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -811,19 +811,19 @@ void sync_deleteNode_test()
 	}
 
 
-	//ÈôÉ¾³ıµÄ½áµãÖĞ º¬ÓĞ×Ó½áµã£¬ÔòÉ¾³ıÊ§°Ü
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ä¸­ å«æœ‰å­ç»“ç‚¹ï¼Œåˆ™åˆ é™¤å¤±è´¥
 	ec_other = cli->deleteNode(SYNC_DELETENODE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKNotEmpty);
 
 
-	//ÏÈÉ¾³ı×Ó½áµã£¬ÔÙÉ¾³ı·ÖÖ§½áµã
+	//å…ˆåˆ é™¤å­ç»“ç‚¹ï¼Œå†åˆ é™¤åˆ†æ”¯ç»“ç‚¹
 	ec_other = cli->deleteNode(SYNC_DELETENODE_PATH_NAME_2);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
 	ec_other = cli->deleteNode(SYNC_DELETENODE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(SYNC_DELETENODE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -832,22 +832,22 @@ void sync_deleteNode_test()
 
 
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(SYNC_DELETENODE_PATH_NAME_3, value, version) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[sync_deleteNode_test] getNode:%s failed! sync_getNode_test failed!\n", SYNC_DELETENODE_PATH_NAME_3);
 		goto TAG_SYNC_DELETENODE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅ²»¶Ô£¬Ôò·µ»ØÊ§°Ü
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·ä¸å¯¹ï¼Œåˆ™è¿”å›å¤±è´¥
 	ec_other = cli->deleteNode(SYNC_DELETENODE_PATH_NAME_3, version + 1);
 	assert(ec_other == ZkUtil::kZKError);
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅÕıÈ·£¬ÔòÉ¾³ı³É¹¦
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåˆ™åˆ é™¤æˆåŠŸ
 	ec_other = cli->deleteNode(SYNC_DELETENODE_PATH_NAME_3, version);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(SYNC_DELETENODE_PATH_NAME_3);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -874,7 +874,7 @@ void sync_deleteRecursive_test()
 	std::string value = "";
 	int32_t version = 0;
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	ec = cli->createIfNeedCreateParents(SYNC_DELETERECURISIVE_PATH_NAME_2, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -882,11 +882,11 @@ void sync_deleteRecursive_test()
 		goto TAG_SYNC_DELETERECRUSIVE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅÕıÈ·£¬ÔòÉ¾³ı³É¹¦
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåˆ™åˆ é™¤æˆåŠŸ
 	ec_other = cli->deleteRecursive(SYNC_DELETERECURISIVE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(SYNC_DELETERECURISIVE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -1100,7 +1100,7 @@ void async_create_test_1_cb(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& clie
 	std::string* orignalPath = (std::string*) context;
 	assert(path == (*orignalPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ZkUtil::ZkErrorCode ec_other;
 	ec_other = cli->isExist(path);
 	assert(ec_other == ZkUtil::kZKSucceed);
@@ -1129,7 +1129,7 @@ void async_create_test_2(std::string test_path)
 	bool isTemp = true;
 	bool isSeq = false;
 
-	//´´½¨Ò»¸ösession
+	//åˆ›å»ºä¸€ä¸ªsession
 	handle_temp = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
 	if (handle_temp == 0)
 	{
@@ -1153,17 +1153,17 @@ void async_create_test_2(std::string test_path)
 
 	gpCreateTest2CountDown->wait();
 
-	//Ïú»Ùµ±Ç°session
+	//é”€æ¯å½“å‰session
 	ZkClientManager::instance().destroyClient(handle_temp);
 	cli_temp.reset();
 
 	printf("distroy this zkclient, session Handle:%d. please wait...\n", handle_temp);
-	sleep(5);  //µÈ´ı5Ãë£¬temp session Ïú»Ù
+	sleep(5);  //ç­‰å¾…5ç§’ï¼Œtemp session é”€æ¯
 
 	ec_other = cli->isExist(test_path);
 	printf("ec:%d, path:%s \n", ec_other, test_path.c_str());
 
-	assert(ec_other == ZkUtil::kZKNotExist);   //²âÊÔ sessionÏú»Ùºó£¬ÁÙÊ±µÄnode Ó¦×Ô¶¯É¾³ı
+	assert(ec_other == ZkUtil::kZKNotExist);   //æµ‹è¯• sessioné”€æ¯åï¼Œä¸´æ—¶çš„node åº”è‡ªåŠ¨åˆ é™¤
 
 	delete gpCreateTest2CountDown;
 	gpCreateTest2CountDown = NULL;
@@ -1184,7 +1184,7 @@ void async_create_test_2_cb(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& clie
 	std::string* orignalPath = (std::string*) context;
 	assert(path == (*orignalPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ZkClientPtr cli = ZkClientManager::instance().getZkClient(gZkClientHandle);
 	ZkUtil::ZkErrorCode ec_other;
 	ec_other = cli->isExist(path);
@@ -1235,7 +1235,7 @@ void async_create_test_3_cb(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& clie
 	//assert(path != (*orignalPath));
 	assert(path == (*orignalPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË   ÒòÎªÕâÀï·µ»ØµÄ²»ÊÇ ´´½¨ºóµÄ Õæ¿ÕµÄ½áµãÃû£¬ËùÒÔ²»ÄÜÖ±½ÓÓÃpathÀ´ÅĞ¶Ï£¬¶øÓ¦¸ÃÏÈ»ñÈ¡ÕæÊµµÄ½áµãÃû£¬ÔÙÅĞ¶ÏÊÇ·ñ´æÔÚ
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†   å› ä¸ºè¿™é‡Œè¿”å›çš„ä¸æ˜¯ åˆ›å»ºåçš„ çœŸç©ºçš„ç»“ç‚¹åï¼Œæ‰€ä»¥ä¸èƒ½ç›´æ¥ç”¨pathæ¥åˆ¤æ–­ï¼Œè€Œåº”è¯¥å…ˆè·å–çœŸå®çš„ç»“ç‚¹åï¼Œå†åˆ¤æ–­æ˜¯å¦å­˜åœ¨
 	//ZkUtil::ZkErrorCode ec_other = cli->isExist(path);
 	//assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -1270,7 +1270,7 @@ void async_create_test_4(std::string test_path)
 	bool isSeq = true;
 	CreateTest4Context *context;
 
-	//´´½¨Ò»¸ösession
+	//åˆ›å»ºä¸€ä¸ªsession
 	handle_temp = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
 	if (handle_temp == 0)
 	{
@@ -1295,15 +1295,15 @@ void async_create_test_4(std::string test_path)
 
 	gpCreateTest4CountDown->wait();
 
-	//Ïú»Ùµ±Ç°session
+	//é”€æ¯å½“å‰session
 	ZkClientManager::instance().destroyClient(handle_temp);
 	cli_temp.reset();
 
 	printf("distroy this zkclient, session Handle:%d. please wait...\n", handle_temp);
-	sleep(5);  //µÈ´ı5Ãë£¬temp session Ïú»Ù
+	sleep(5);  //ç­‰å¾…5ç§’ï¼Œtemp session é”€æ¯
 
 	ec_other = cli->isExist(context->retPath_);
-	assert(ec_other == ZkUtil::kZKNotExist);   //²âÊÔ sessionÏú»Ùºó£¬ÁÙÊ±µÄnode Ó¦×Ô¶¯É¾³ı
+	assert(ec_other == ZkUtil::kZKNotExist);   //æµ‹è¯• sessioné”€æ¯åï¼Œä¸´æ—¶çš„node åº”è‡ªåŠ¨åˆ é™¤
 
 	delete gpCreateTest4CountDown;
 	gpCreateTest4CountDown = NULL;
@@ -1329,7 +1329,7 @@ void async_create_test_4_cb(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& clie
 	assert(path == testContext->originalPath_);
 	testContext->retPath_ = path;
 
-	//²âÊÔ ´´½¨³É¹¦ÁË   ÒòÎªÕâÀï·µ»ØµÄ²»ÊÇ ´´½¨ºóµÄ Õæ¿ÕµÄ½áµãÃû£¬ËùÒÔ²»ÄÜÖ±½ÓÓÃpathÀ´ÅĞ¶Ï£¬¶øÓ¦¸ÃÏÈ»ñÈ¡ÕæÊµµÄ½áµãÃû£¬ÔÙÅĞ¶ÏÊÇ·ñ´æÔÚ
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†   å› ä¸ºè¿™é‡Œè¿”å›çš„ä¸æ˜¯ åˆ›å»ºåçš„ çœŸç©ºçš„ç»“ç‚¹åï¼Œæ‰€ä»¥ä¸èƒ½ç›´æ¥ç”¨pathæ¥åˆ¤æ–­ï¼Œè€Œåº”è¯¥å…ˆè·å–çœŸå®çš„ç»“ç‚¹åï¼Œå†åˆ¤æ–­æ˜¯å¦å­˜åœ¨
 	//ZkClientPtr cli = ZkClientManager::instance().getZkClient(gZkClientHandle);
 	//ZkUtil::ZkErrorCode ec_other;
 	//ec_other = cli->isExist(path);
@@ -1359,14 +1359,14 @@ void async_create_test_5(std::string parentPath, std::string childPath)
 	std::string* originalParentPath;
 	std::string* originalChildPath;
 
-	//²âÊÔ Èç¹û´´½¨µÄ½áµãÖĞ£¬¸¸½áµã»¹Î´´´½¨£¬Ó¦·µ»ØÊ§°Ü
+	//æµ‹è¯• å¦‚æœåˆ›å»ºçš„ç»“ç‚¹ä¸­ï¼Œçˆ¶ç»“ç‚¹è¿˜æœªåˆ›å»ºï¼Œåº”è¿”å›å¤±è´¥
 	if (cli->create(childPath, "", boost::bind(&async_create_test_5_cb_1, _1, _2, _3, _4, _5), NULL, isTemp, isSeq) == false)
 	{
 		printf("\n[async_create_test_5] create path failed! path:%s \n", childPath.c_str());
 		return;
 	}
 
-	//ÏÈ´´½¨¸¸½áµã
+	//å…ˆåˆ›å»ºçˆ¶ç»“ç‚¹
 	gpCreateTest5CountDown = new muduo::CountDownLatch(1);
 	originalParentPath = new std::string(parentPath);
 	if (cli->create(parentPath, "", boost::bind(&async_create_test_5_cb_2, _1, _2, _3, _4, _5), originalParentPath, isTemp, isSeq) == false)
@@ -1381,7 +1381,7 @@ void async_create_test_5(std::string parentPath, std::string childPath)
 
 	gpCreateTest5CountDown->wait();
 
-	//ÔÙ´´½¨×Ó½áµã
+	//å†åˆ›å»ºå­ç»“ç‚¹
 	originalChildPath = new std::string(childPath);
 	if (cli->create(childPath, "", boost::bind(&async_create_test_5_cb_3, _1, _2, _3, _4, _5), originalChildPath, isTemp, isSeq) == false)
 	{
@@ -1414,7 +1414,7 @@ void async_create_test_5_cb_2(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& cl
 	std::string* orignalParentPath = (std::string*) context;
 	assert(path == (*orignalParentPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ZkUtil::ZkErrorCode ec_other = cli->isExist(path);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -1437,7 +1437,7 @@ void async_create_test_5_cb_3(ZkUtil::ZkErrorCode errcode, const ZkClientPtr& cl
 	std::string* orignalChildPath = (std::string*) context;
 	assert(path == (*orignalChildPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ZkUtil::ZkErrorCode ec_other = cli->isExist(path);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -1462,7 +1462,7 @@ void asyn_create_test()
 	std::string retPath = "";
 	ZkUtil::ZkErrorCode ec;
 
-	//ÏÈÉ¾³ı 5 ¸ö½áµã
+	//å…ˆåˆ é™¤ 5 ä¸ªç»“ç‚¹
 	ec = cli->deleteNode(ASYNC_CREATE_PATH_NAME_1);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -1491,7 +1491,7 @@ void asyn_create_test()
 		goto TAG_ASYNC_CREATE_TEST_FAILED;
 	}
 
-	//Ó¦ÏÈ É¾³ı Ò¶×Ó½áµã£¬ÔÙÉ¾³ı ·ÖÖ§½áµã
+	//åº”å…ˆ åˆ é™¤ å¶å­ç»“ç‚¹ï¼Œå†åˆ é™¤ åˆ†æ”¯ç»“ç‚¹
 	ec = cli->deleteNode(ASYNC_CREATE_PATH_NAME_6);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -1506,19 +1506,19 @@ void asyn_create_test()
 		goto TAG_ASYNC_CREATE_TEST_FAILED;
 	}
 
-	//²âÊÔnot temp, not seq µÄÇé¿ö//////////////////////////////
+	//æµ‹è¯•not temp, not seq çš„æƒ…å†µ//////////////////////////////
 	async_create_test_1(ASYNC_CREATE_PATH_NAME_1);
 
-	//²âÊÔtemp, not seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•temp, not seq çš„æƒ…å†µ////////////////////////////////
 	async_create_test_2(ASYNC_CREATE_PATH_NAME_2);
 
-	//²âÊÔnot temp, seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•not temp, seq çš„æƒ…å†µ////////////////////////////////
 	async_create_test_3(ASYNC_CREATE_PATH_NAME_3);
 
-	//²âÊÔtemp, seq µÄÇé¿ö////////////////////////////////
+	//æµ‹è¯•temp, seq çš„æƒ…å†µ////////////////////////////////
 	async_create_test_4(ASYNC_CREATE_PATH_NAME_4);
 
-	//²âÊÔ Èç¹û´´½¨µÄ½áµãÖĞ£¬¸¸½áµã»¹Î´´´½¨£¬Ó¦·µ»ØÊ§°Ü
+	//æµ‹è¯• å¦‚æœåˆ›å»ºçš„ç»“ç‚¹ä¸­ï¼Œçˆ¶ç»“ç‚¹è¿˜æœªåˆ›å»ºï¼Œåº”è¿”å›å¤±è´¥
 	async_create_test_5(ASYNC_CREATE_PATH_NAME_5, ASYNC_CREATE_PATH_NAME_6);
 
 	printf("async_create_test succeed!\n");
@@ -1546,7 +1546,7 @@ void asyn_createIfNeedCreateParents_test()
 	bool isSeq = false;
 	std::string *orignalPath = NULL;
 
-	//Ó¦ÏÈ É¾³ı Ò¶×Ó½áµã£¬ÔÙÉ¾³ı ·ÖÖ§½áµã
+	//åº”å…ˆ åˆ é™¤ å¶å­ç»“ç‚¹ï¼Œå†åˆ é™¤ åˆ†æ”¯ç»“ç‚¹
 	ec = cli->deleteNode(ASYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -1561,7 +1561,7 @@ void asyn_createIfNeedCreateParents_test()
 		goto TAG_ASYNC_CREATEIFNEEDCREATEPARENT_TEST_FAILED;
 	}
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	orignalPath = new std::string(ASYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2);
 	if (cli->createIfNeedCreateParents(ASYNC_CREATEIFNEEDCREATEPARENT_PATH_NAME_2, "", 
 					boost::bind(&asyn_createIfNeedCreateParents_test_cb, _1, _2, _3, _4, _5), 
@@ -1590,7 +1590,7 @@ void asyn_createIfNeedCreateParents_test_cb(ZkUtil::ZkErrorCode errcode, const Z
 	std::string* orignalChildPath = (std::string*) context;
 	assert(path == (*orignalChildPath));
 
-	//²âÊÔ ´´½¨³É¹¦ÁË
+	//æµ‹è¯• åˆ›å»ºæˆåŠŸäº†
 	ZkUtil::ZkErrorCode ec_other = cli->isExist(path);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
@@ -1630,7 +1630,7 @@ void asyn_set_test()
 	std::string *setPath_sec = NULL;
 	std::string *setPath_third = NULL;
 
-	//´´½¨²âÊÔ½áµã
+	//åˆ›å»ºæµ‹è¯•ç»“ç‚¹
 	ec = cli->create(ASYNC_SET_PATH_NAME, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -1638,14 +1638,14 @@ void asyn_set_test()
 		goto TAG_ASYNC_SET_TEST_FAILED;
 	}
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(ASYNC_SET_PATH_NAME, value1, version1) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[async_set_test] getNode:%s failed! sync_getNode_test failed!\n", ASYNC_GETNODE_PATH_NAME);
 		goto TAG_ASYNC_SET_TEST_FAILED;
 	}
 
-	//ÉèÖÃ½áµãµÄ °æ±¾ºÅ²»¶Ô£¬Ó¦·µ»ØÊ§°Ü
+	//è®¾ç½®ç»“ç‚¹çš„ ç‰ˆæœ¬å·ä¸å¯¹ï¼Œåº”è¿”å›å¤±è´¥
 	setPath = new std::string(ASYNC_SET_PATH_NAME);
 	if (cli->set(ASYNC_SET_PATH_NAME, "test_value_1", boost::bind(&asyn_set_test_cb_1, _1, _2, _3, _4, _5), setPath, version1 + 1) == false)
 	{
@@ -1655,7 +1655,7 @@ void asyn_set_test()
 		goto TAG_ASYNC_SET_TEST_FAILED;
 	}
 
-	//ÉèÖÃ½áµãµÄ °æ±¾ºÅÕıÈ·£¬Ó¦·µ»Ø³É¹¦
+	//è®¾ç½®ç»“ç‚¹çš„ ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåº”è¿”å›æˆåŠŸ
 	gpSetTestCountDown_1 = new CountDownLatch(1);
 	setPath_sec = new std::string(ASYNC_SET_PATH_NAME);
 	if (cli->set(ASYNC_SET_PATH_NAME, "test_value_2", boost::bind(&asyn_set_test_cb_2, _1, _2, _3, _4, _5), setPath_sec, version1) == false)
@@ -1670,7 +1670,7 @@ void asyn_set_test()
 
 	gpSetTestCountDown_1->wait();
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(ASYNC_SET_PATH_NAME, value2, version2) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[async_set_test] getNode:%s failed! sync_getNode_test failed!\n", ASYNC_SET_PATH_NAME);
@@ -1679,7 +1679,7 @@ void asyn_set_test()
 	assert(value2 == "test_value_2");
 
 
-	//²»ÊäÈë°æ±¾ºÅ£¬ÔòÄ¬ÈÏ ÉèÖÃ×î½üµÄ°æ±¾ºÅ
+	//ä¸è¾“å…¥ç‰ˆæœ¬å·ï¼Œåˆ™é»˜è®¤ è®¾ç½®æœ€è¿‘çš„ç‰ˆæœ¬å·
 	gpSetTestCountDown_2 = new CountDownLatch(1);
 	setPath_third = new std::string(ASYNC_SET_PATH_NAME);
 	if (cli->set(ASYNC_SET_PATH_NAME, "test_value_3", boost::bind(&asyn_set_test_cb_3, _1, _2, _3, _4, _5), setPath_third) == false)
@@ -1694,7 +1694,7 @@ void asyn_set_test()
 
 	gpSetTestCountDown_2->wait();
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(ASYNC_SET_PATH_NAME, value3, version3) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[sync_set_test] getNode:%s failed! sync_getNode_test failed!\n", ASYNC_SET_PATH_NAME);
@@ -1800,7 +1800,7 @@ void asyn_deleteNode_test()
 	std::string *oriPath4 = NULL;
 	std::string *oriPath5 = NULL;
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	ec = cli->createIfNeedCreateParents(ASYNC_DELETENODE_PATH_NAME_2, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -1815,7 +1815,7 @@ void asyn_deleteNode_test()
 		goto TAG_ASYNC_DELETENODE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµãÖĞ º¬ÓĞ×Ó½áµã£¬ÔòÉ¾³ıÊ§°Ü
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ä¸­ å«æœ‰å­ç»“ç‚¹ï¼Œåˆ™åˆ é™¤å¤±è´¥
 	oriPath1 = new std::string(ASYNC_DELETENODE_PATH_NAME_1);
 	if (cli->deleteNode(ASYNC_DELETENODE_PATH_NAME_1, boost::bind(&asyn_deleteNode_test_1, _1, _2, _3, _4), oriPath1) == false)
 	{
@@ -1825,7 +1825,7 @@ void asyn_deleteNode_test()
 		goto TAG_ASYNC_DELETENODE_TEST_FAILED;
 	}
 
-	//ÏÈÉ¾³ı×Ó½áµã£¬ÔÙÉ¾³ı·ÖÖ§½áµã
+	//å…ˆåˆ é™¤å­ç»“ç‚¹ï¼Œå†åˆ é™¤åˆ†æ”¯ç»“ç‚¹
 	gpDeleteNodeTestCountDown_1 = new CountDownLatch(1);
 	oriPath2 = new std::string(ASYNC_DELETENODE_PATH_NAME_2);
 	if (cli->deleteNode(ASYNC_DELETENODE_PATH_NAME_2, boost::bind(&asyn_deleteNode_test_2, _1, _2, _3, _4), oriPath2) == false)
@@ -1854,7 +1854,7 @@ void asyn_deleteNode_test()
 
 	gpDeleteNodeTestCountDown_2->wait();
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(ASYNC_DELETENODE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -1862,14 +1862,14 @@ void asyn_deleteNode_test()
 	assert(ec_other == ZkUtil::kZKNotExist);
 
 
-	//»ñÈ¡²âÊÔ½áµãµÄÖµ£¬°æ±¾ºÅ
+	//è·å–æµ‹è¯•ç»“ç‚¹çš„å€¼ï¼Œç‰ˆæœ¬å·
 	if (cli->getNode(ASYNC_DELETENODE_PATH_NAME_3, value, version) != ZkUtil::kZKSucceed)
 	{
 		printf("\n[async_deleteNode_test] getNode:%s failed! sync_getNode_test failed!\n", ASYNC_DELETENODE_PATH_NAME_3);
 		goto TAG_ASYNC_DELETENODE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅ²»¶Ô£¬Ôò·µ»ØÊ§°Ü
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·ä¸å¯¹ï¼Œåˆ™è¿”å›å¤±è´¥
 	oriPath4 = new std::string(ASYNC_DELETENODE_PATH_NAME_3);
 	if (cli->deleteNode(ASYNC_DELETENODE_PATH_NAME_3, boost::bind(&asyn_deleteNode_test_4, _1, _2, _3, _4), oriPath4, version + 1) == false)
 	{
@@ -1879,7 +1879,7 @@ void asyn_deleteNode_test()
 		goto TAG_ASYNC_DELETENODE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅÕıÈ·£¬ÔòÉ¾³ı³É¹¦
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåˆ™åˆ é™¤æˆåŠŸ
 	gpDeleteNodeTestCountDown_3 = new CountDownLatch(1);
 	oriPath5 = new std::string(ASYNC_DELETENODE_PATH_NAME_3);
 	if (cli->deleteNode(ASYNC_DELETENODE_PATH_NAME_3, boost::bind(&asyn_deleteNode_test_5, _1, _2, _3, _4), oriPath5, version) == false)
@@ -1894,7 +1894,7 @@ void asyn_deleteNode_test()
 
 	gpDeleteNodeTestCountDown_3->wait();
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(SYNC_DELETENODE_PATH_NAME_3);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -2019,7 +2019,7 @@ void asyn_deleteRecursive_test()
 	int32_t version = 0;
 	std::string *oriPath = NULL;
 
-	//Ö±½Ó´´½¨Ò¶×Ó½áµã
+	//ç›´æ¥åˆ›å»ºå¶å­ç»“ç‚¹
 	ec = cli->createIfNeedCreateParents(ASYNC_DELETERECURISIVE_PATH_NAME_2, "", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
 	{
@@ -2027,7 +2027,7 @@ void asyn_deleteRecursive_test()
 		goto TAG_ASYNC_DELETERECRUSIVE_TEST_FAILED;
 	}
 
-	//ÈôÉ¾³ıµÄ½áµã µÄ°æ±¾ºÅÕıÈ·£¬ÔòÉ¾³ı³É¹¦
+	//è‹¥åˆ é™¤çš„ç»“ç‚¹ çš„ç‰ˆæœ¬å·æ­£ç¡®ï¼Œåˆ™åˆ é™¤æˆåŠŸ
 	gpDeleteRecursiveTestCountDown = new CountDownLatch(1);
 	oriPath = new std::string(ASYNC_DELETERECURISIVE_PATH_NAME_1);
 	if (cli->deleteRecursive(ASYNC_DELETERECURISIVE_PATH_NAME_1, boost::bind(&asyn_deleteRecursive_test, _1, _2, _3, _4), oriPath) == false)
@@ -2042,7 +2042,7 @@ void asyn_deleteRecursive_test()
 
 	gpDeleteRecursiveTestCountDown->wait();
 
-	//²âÊÔ É¾³ı³É¹¦ÁË
+	//æµ‹è¯• åˆ é™¤æˆåŠŸäº†
 	ec_other = cli->isExist(ASYNC_DELETERECURISIVE_PATH_NAME_1);
 	assert(ec_other == ZkUtil::kZKNotExist);
 
@@ -2090,7 +2090,7 @@ void regNodeWatcher_cancelRegNodeWatcher_test()
 	ZkUtil::ZkErrorCode ec;
 	ZkClientPtr cli = ZkClientManager::instance().getZkClient(gZkClientHandle);
 
-	//É¾³ı½áµã
+	//åˆ é™¤ç»“ç‚¹
 	ec = cli->deleteNode(NODEWATCHER_PATH_NAME);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKNotExist)
 	{
@@ -2098,7 +2098,7 @@ void regNodeWatcher_cancelRegNodeWatcher_test()
 		return;
 	}
 
-	//×¢²áwatcher
+	//æ³¨å†Œwatcher
 	std::string *oriPath = new std::string(NODEWATCHER_PATH_NAME);
 	if (cli->regNodeWatcher(NODEWATCHER_PATH_NAME, 
 							boost::bind(&regNodeWatcher_cancelRegNodeWatcher_test_cb, _1, _2, _3, _4, _5, _6), oriPath) == false)
@@ -2141,12 +2141,12 @@ void regNodeWatcher_cancelRegNodeWatcher_test()
 	printf("cancel watcher... path:%s\n", NODEWATCHER_PATH_NAME);
 	sleep(5);
 
-	//È¡Ïû×¢²á
+	//å–æ¶ˆæ³¨å†Œ
 	cli->cancelRegNodeWatcher(NODEWATCHER_PATH_NAME);
 
 	sleep(5);
 
-	//¾Í²»»áÍ¨ÖªÁË
+	//å°±ä¸ä¼šé€šçŸ¥äº†
 	printf("[regNodeWatcher_cancelRegNodeWatcher_test] create node, don't watcher.\n");
 	ec = cli->create(NODEWATCHER_PATH_NAME, "test_value_create_after", isTemp, isSeq, retPath);
 	if (ec != ZkUtil::kZKSucceed && ec != ZkUtil::kZKExisted)
@@ -2187,11 +2187,11 @@ void regChildWatcher_cancelRegChildWatcher_test()
 
 	ZkClientPtr cli = ZkClientManager::instance().getZkClient(gZkClientHandle);
 
-	//É¾³ı½áµã
+	//åˆ é™¤ç»“ç‚¹
 	ZkUtil::ZkErrorCode ec_other = cli->deleteRecursive(REGCHILDWATCH_PARENT_NAME);
 	assert(ec_other == ZkUtil::kZKSucceed);
 
-	//Èç¹û¸¸½áµãÃ»ÓĞ´´½¨£¬×¢²áwatcher ÕâÊ±»á×¢²áÊ§°Ü
+	//å¦‚æœçˆ¶ç»“ç‚¹æ²¡æœ‰åˆ›å»ºï¼Œæ³¨å†Œwatcher è¿™æ—¶ä¼šæ³¨å†Œå¤±è´¥
 	std::string *oriPath = new std::string(REGCHILDWATCH_PARENT_NAME);
 	if (cli->regChildWatcher(REGCHILDWATCH_PARENT_NAME, 
 		boost::bind(&regChildWatcher_cancelRegChildWatcher_test_cb, _1, _2, _3, _4, _5), oriPath) == false)
@@ -2202,7 +2202,7 @@ void regChildWatcher_cancelRegChildWatcher_test()
 	printf("create parent node, don't call watcher...\n");
 	sleep(5);
 
-	//´´½¨¸¸½áµã
+	//åˆ›å»ºçˆ¶ç»“ç‚¹
 	std::string retPath = "";
 	ZkUtil::ZkErrorCode ec = cli->create(REGCHILDWATCH_PARENT_NAME, "", false, false, retPath);
 	if (ec != ZkUtil::kZKSucceed)
@@ -2211,7 +2211,7 @@ void regChildWatcher_cancelRegChildWatcher_test()
 		return;
 	}
 
-	//×¢²áwatcher Õâ´Î»á³É¹¦
+	//æ³¨å†Œwatcher è¿™æ¬¡ä¼šæˆåŠŸ
 	if (cli->regChildWatcher(REGCHILDWATCH_PARENT_NAME, 
 		boost::bind(&regChildWatcher_cancelRegChildWatcher_test_cb, _1, _2, _3, _4, _5), oriPath) == false)
 	{
@@ -2222,7 +2222,7 @@ void regChildWatcher_cancelRegChildWatcher_test()
 		printf("\n[regNodeWatcher_cancelRegNodeWatcher_test] regChildWatcher succeed! path:%s\n", REGCHILDWATCH_PARENT_NAME);
 	}
 
-	//´´½¨ ×Ó½áµã
+	//åˆ›å»º å­ç»“ç‚¹
 	std::vector<std::string> childNodes;
 	for (int i = 0; i < REGCHILDWATCH_CHILD_NUM; i++)
 	{
@@ -2244,7 +2244,7 @@ void regChildWatcher_cancelRegChildWatcher_test()
 	printf("delete child node(i=%d), call watcher...\n", 0);
 	sleep(5);
 
-	//É¾³ı×Ó½áµã
+	//åˆ é™¤å­ç»“ç‚¹
 	char path[100] = {0};
 	char childName[100] = {0};
 	snprintf(path, sizeof(path), "%s/%s_%d", REGCHILDWATCH_PARENT_NAME, REGCHILDWATCH_CHILD_NAME, 0);
@@ -2255,14 +2255,14 @@ void regChildWatcher_cancelRegChildWatcher_test()
 		return;
 	}
 
-//    //É¾³ı ¸¸½áµã => ÕâÊ±»á»Øµ÷»á³öÏÖ kGetChildListFailed_ParentNotExist£¬
-//	  //zkclient»áÔÙ×¢²áwatcher, µ« ¸¸½áµãÒÑÉ¾³ı£¬ »á×¢²áÊ§°Ü¡£zkclient»áÔÙ¹ı5·ÖÖÓºó ÔÙÖØÊÔ×¢²á.
+//    //åˆ é™¤ çˆ¶ç»“ç‚¹ => è¿™æ—¶ä¼šå›è°ƒä¼šå‡ºç° kGetChildListFailed_ParentNotExistï¼Œ
+//	  //zkclientä¼šå†æ³¨å†Œwatcher, ä½† çˆ¶ç»“ç‚¹å·²åˆ é™¤ï¼Œ ä¼šæ³¨å†Œå¤±è´¥ã€‚zkclientä¼šå†è¿‡5åˆ†é’Ÿå å†é‡è¯•æ³¨å†Œ.
 //    ec_other = cli->deleteRecursive(REGCHILDWATCH_PARENT_NAME);
 //    assert(ec_other == ZkUtil::kZKSucceed);
 
 	printf("set child node(i=%d) value, don't call watcher...\n", 1);
 	sleep(5);
-	//ĞŞ¸Ä×Ó½áµãµÄÖµ£¬²»»áÍ¨Öªwatcher
+	//ä¿®æ”¹å­ç»“ç‚¹çš„å€¼ï¼Œä¸ä¼šé€šçŸ¥watcher
 	snprintf(path, sizeof(path), "%s/%s_%d", REGCHILDWATCH_PARENT_NAME, REGCHILDWATCH_CHILD_NAME, 1);
 	ec_chd = cli->set(path, "child_change_value");
 	if (ec_chd != ZkUtil::kZKSucceed)
@@ -2274,12 +2274,12 @@ void regChildWatcher_cancelRegChildWatcher_test()
 	printf("cancel child watcher... path:%s\n", REGCHILDWATCH_PARENT_NAME);
 	sleep(5);
 
-	//È¡Ïû×¢²á
+	//å–æ¶ˆæ³¨å†Œ
 	cli->cancelRegChildWatcher(REGCHILDWATCH_PARENT_NAME);
 
 	sleep(5);
 
-	//É¾³ı×Ó½áµã ¾Í²»»áÍ¨ÖªÁË
+	//åˆ é™¤å­ç»“ç‚¹ å°±ä¸ä¼šé€šçŸ¥äº†
 	printf("delete child node(i=%d), don't call watcher...\n", 2);
 	snprintf(path, sizeof(path), "%s/%s_%d", REGCHILDWATCH_PARENT_NAME, REGCHILDWATCH_CHILD_NAME, 2);
 	ec_chd = cli->deleteNode(path);
@@ -2292,7 +2292,7 @@ void regChildWatcher_cancelRegChildWatcher_test()
 	printf("create child node(i=%d), don't call watcher...\n", 5);
 	sleep(5);
 
-	//´´½¨×Ó½áµã ¾Í²»»áÍ¨ÖªÁË
+	//åˆ›å»ºå­ç»“ç‚¹ å°±ä¸ä¼šé€šçŸ¥äº†
 	snprintf(path, sizeof(path), "%s/%s_%d", REGCHILDWATCH_PARENT_NAME, REGCHILDWATCH_CHILD_NAME, 5);
 	ec_chd = cli->create(path, "", false, false, retPath);
 	if (ec_chd != ZkUtil::kZKSucceed)
@@ -2322,13 +2322,13 @@ void regChildWatcher_cancelRegChildWatcher_test_cb(ZkUtil::ZkNotifyType type, co
 
 int main()
 {
-    //ÉèÖÃzookeeperÈÕÖ¾Â·¾¶
+    //è®¾ç½®zookeeperæ—¥å¿—è·¯å¾„
     if (ZkClientManager::setLogConf(true, "./zk_log") == false)
     {
 		printf("setLogConf failed!\n\n");
     }
 
-    //´´½¨Ò»¸ösession
+    //åˆ›å»ºä¸€ä¸ªsession
     uint32_t handle = ZkClientManager::instance().createZkClient(ZOOKEEPER_SERVER_CONN_STRING, 30000, NULL, NULL, NULL);
     if (handle == 0)
     {
@@ -2338,47 +2338,47 @@ int main()
 
 	gZkClientHandle = handle;
 
-    //Í¨¹ısession handle£¬»ñÈ¡ZkClient
+    //é€šè¿‡session handleï¼Œè·å–ZkClient
     ZkClientPtr cli = ZkClientManager::instance().getZkClient(gZkClientHandle);
-//	getHandle_test(gZkClientHandle, cli);
-//
-//	getClientId_test();
-//
-//	sync_getNode_test();
-//
-//	sync_getChildren_test();
-//
-//	sync_isExist_test();
-//
-//	sync_create_test();
-//
-//	sync_createIfNeedCreateParents_test();
-//
-//	sync_set_test();
-//
-//	sync_deleteNode_test();
-//
-//	sync_deleteRecursive_test();
-//
-//	asyn_getNode_test();
-//
-//	asyn_getChildren_test();
-//
-//	asyn_isExist_test();
-//
-//	asyn_create_test();
-//
-//	asyn_createIfNeedCreateParents_test();
-//
-//	asyn_set_test();
-//
-//	asyn_deleteNode_test();
-//
-//	asyn_deleteRecursive_test();
-//
-//	regNodeWatcher_cancelRegNodeWatcher_test();
-//
-//	regChildWatcher_cancelRegChildWatcher_test();
+	getHandle_test(gZkClientHandle, cli);
+
+	getClientId_test();
+
+	sync_getNode_test();
+
+	sync_getChildren_test();
+
+	sync_isExist_test();
+
+	sync_create_test();
+
+	sync_createIfNeedCreateParents_test();
+
+	sync_set_test();
+
+	sync_deleteNode_test();
+
+	sync_deleteRecursive_test();
+
+	asyn_getNode_test();
+
+	asyn_getChildren_test();
+
+	asyn_isExist_test();
+
+	asyn_create_test();
+
+	asyn_createIfNeedCreateParents_test();
+
+	asyn_set_test();
+
+	asyn_deleteNode_test();
+
+	asyn_deleteRecursive_test();
+
+	regNodeWatcher_cancelRegNodeWatcher_test();
+
+	regChildWatcher_cancelRegChildWatcher_test();
 
 	sync_create_seq_no_test();
 	sleep(UINT_MAX);
