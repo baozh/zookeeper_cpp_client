@@ -1,8 +1,8 @@
 # ZkCppClient
 
-## CppClient 解决的问题
+## ZkCppClient 解决的问题
 
-类似Java客户端ZkClient、Curator，对ZookeeperLib c api的C++封装，主要解决以下几个问题：
+ZkCppClient 类似Java客户端ZkClient、Curator，是对ZookeeperLib c api的C++封装，主要解决以下几个问题：
 
 1. 支持Watcher的永久注册  
 Client收到Watcher通知后，会再向Zookeeper注册Watcher。并且，也提供了接口 `取消Watcher的重注册`。
